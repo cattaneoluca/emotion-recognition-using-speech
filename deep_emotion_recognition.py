@@ -259,6 +259,7 @@ class DeepEmotionRecognizer(EmotionRecognizer):
                         validation_data=(self.X_test, self.y_test),
                         callbacks=[self.checkpointer, self.tensorboard],
                         verbose=self.verbose)
+
         
         self.model_trained = True
         if self.verbose > 0:
@@ -267,7 +268,7 @@ class DeepEmotionRecognizer(EmotionRecognizer):
     def predict(self, audio_path):
         feature = extract_feature(audio_path, **self.audio_config).reshape((1, 1, self.input_length))
         if self.classification:
-            return self.int2emotions[self.model.predict_classes(feature)[0][0]]
+            return self.int2emotions[self.model.predict(feature)[0][0]]
         else:
             return self.model.predict(feature)[0][0][0]
 
